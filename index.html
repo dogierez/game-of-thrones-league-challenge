@@ -18,8 +18,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh; /* Changed to allow scrolling */
+            overflow-x: hidden;
+            overflow-y: auto; /* Allows scrolling on smaller screens */
             text-align: center;
         }
 
@@ -30,8 +31,8 @@
             gap: 20px;
             width: 100%;
             max-width: 1100px;
-            overflow-y: auto;
             padding: 20px;
+            box-sizing: border-box;
         }
 
         .shield-container {
@@ -104,6 +105,7 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 25px;
             justify-content: center;
+            width: 100%;
         }
 
         #set-buttons {
@@ -139,7 +141,7 @@
         #flashcard-area {
             display: none;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             position: relative;
         }
 
@@ -158,7 +160,7 @@
 
         #sentence-container {
             position: absolute;
-            top: 50%;
+            top: 45%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90%;
@@ -175,6 +177,42 @@
 
         .state-turkish { color: #ffffff; } 
         .state-english { color: #00ffff; } 
+
+        /* ON-SCREEN TOUCH CONTROLS */
+        .touch-controls {
+            position: absolute; 
+            bottom: 20px; 
+            width: 100%; 
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        .touch-btn {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #555;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .touch-btn:active { transform: scale(0.95); }
+
+        /* --- MOBILE RESPONSIVE FIXES --- */
+        @media (max-width: 800px) {
+            #league-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .shield-btn { width: 140px; height: 180px; }
+            .shield-number { font-size: 40px; }
+            .shield-name { font-size: 18px; }
+            .hud { font-size: 16px; top: 10px; }
+            .sentence { font-size: 6vw; }
+            .touch-btn { padding: 10px 12px; font-size: 12px; }
+        }
     </style>
 </head>
 <body>
@@ -242,21 +280,30 @@
     <div id="flashcard-area">
         <div id="progress-hud" class="hud">Set: <span id="hud-set">1</span><br>Card <span id="hud-current">0</span> / <span id="hud-total">0</span></div>
         <div id="score-hud" class="hud">Correct: <span id="hud-correct" class="score-correct">0</span><br>Failed: <span id="hud-failed" class="score-failed">0</span></div>
+        
         <div id="sentence-container">
             <div id="turkish-text" class="sentence state-turkish"></div>
             <div id="english-text" class="sentence state-english" style="visibility: hidden;"></div>
         </div>
-        <div style="position: absolute; bottom: 20px; width: 100%; text-align: center; color: #555; font-family: monospace; font-size: 18px;">
-            [UP] Reveal | [RIGHT] Correct | [LEFT] Failed | [DOWN] Undo | [ESC] Abort
+        
+        <div class="touch-controls">
+            <button class="touch-btn" onclick="handleAction('reveal')">👁️ Reveal</button>
+            <button class="touch-btn" style="border-color: #f00; color: #f00;" onclick="handleAction('fail')">❌ Fail</button>
+            <button class="touch-btn" style="border-color: #0f0; color: #0f0;" onclick="handleAction('pass')">✅ Correct</button>
+            <button class="touch-btn" onclick="handleAction('undo')">↩️ Undo</button>
+            <button class="touch-btn" style="border-color: #ffe81f; color: #ffe81f;" onclick="handleAction('exit')">Exit</button>
         </div>
     </div>
 
-    <div id="results-screen" class="menu-container" style="display: none;">
+    <div id="results-screen" class="menu-container" style="display: none; justify-content: center; height: 100vh;">
         <h1 style="font-size: 48px; margin-bottom: 10px;">RESULTS</h1>
         <h2 id="results-message" style="color: #888; font-family: monospace; margin-top: 0;"></h2>
         <div style="font-size: 48px; color: orange; margin-bottom: 30px;">Success: <span id="res-percentage">0</span>%</div>
         <div style="font-size: 36px; margin-bottom: 40px;"><span class="score-correct">Correct: <span id="res-correct">0</span></span><br><span class="score-failed">Failed: <span id="res-failed">0</span></span></div>
-        <div><button class="back-btn" onclick="showSetMenu()" style="margin-right: 20px;">Back to Sets</button><button class="back-btn" onclick="showMainMenu()">Main Menu</button></div>
+        <div>
+            <button class="back-btn" onclick="showSetMenu()" style="margin-right: 20px;">Back to Sets</button>
+            <button class="back-btn" onclick="showMainMenu()">Main Menu</button>
+        </div>
     </div>
 
     <script>
@@ -1080,18 +1127,41 @@
             document.getElementById('res-failed').innerText = scoreFailed;
         }
 
-        document.addEventListener('keydown', (e) => {
+        // --- NEW CENTRALIZED ACTION HANDLER (For Touch & Keyboard) ---
+        function handleAction(actionType) {
             if (!isActive) return;
-            if (e.key === 'ArrowUp') flipCard();
-            else if (e.key === 'ArrowRight' && isFlipped) { scoreHistory.push('correct'); scoreCorrect++; nextCard(); }
-            else if (e.key === 'ArrowLeft' && isFlipped) { scoreHistory.push('failed'); scoreFailed++; nextCard(); }
-            else if (e.key === 'ArrowDown' && currentIndex > 0) {
+
+            if (actionType === 'reveal') { 
+                flipCard(); 
+            }
+            else if (actionType === 'pass' && isFlipped) { 
+                scoreHistory.push('correct'); scoreCorrect++; nextCard(); 
+            }
+            else if (actionType === 'fail' && isFlipped) { 
+                scoreHistory.push('failed'); scoreFailed++; nextCard(); 
+            }
+            else if (actionType === 'undo' && currentIndex > 0) {
                 currentIndex--; const last = scoreHistory.pop();
                 if (last === 'correct') scoreCorrect--; if (last === 'failed') scoreFailed--;
-                updateHUD(); document.getElementById('turkish-text').innerText = activeDeck[currentIndex].tr;
+                updateHUD(); 
+                document.getElementById('turkish-text').innerText = activeDeck[currentIndex].tr;
                 document.getElementById('english-text').innerText = activeDeck[currentIndex].en;
-                document.getElementById('english-text').style.visibility = 'visible'; isFlipped = true;
-            } else if (e.key === 'Escape') endExercise("Aborted");
+                document.getElementById('english-text').style.visibility = 'visible'; 
+                isFlipped = true;
+            }
+            else if (actionType === 'exit') {
+                endExercise("Aborted");
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!isActive) return;
+            
+            if (e.key === 'ArrowUp') handleAction('reveal');
+            else if (e.key === 'ArrowRight') handleAction('pass');
+            else if (e.key === 'ArrowLeft') handleAction('fail');
+            else if (e.key === 'ArrowDown') handleAction('undo');
+            else if (e.key === 'Escape') handleAction('exit');
         });
 
         updateMenuProgress();
