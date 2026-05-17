@@ -296,7 +296,14 @@
         <h2 id="results-message" style="color: #888; font-family: monospace; margin-top: 0;"></h2>
         <div style="font-size: 48px; color: orange; margin-bottom: 30px;">Success: <span id="res-percentage">0</span>%</div>
         <div style="font-size: 36px; margin-bottom: 40px;"><span class="score-correct">Correct: <span id="res-correct">0</span></span><br><span class="score-failed">Failed: <span id="res-failed">0</span></span></div>
-        <div>
+        
+        <div id="failed-prompt-area" style="margin-bottom: 30px; display: none;">
+            <div style="font-size: 22px; margin-bottom: 20px; color: #ff0000; font-family: monospace; letter-spacing: 1px;">DO YOU WANT TO CONTINUE WITH THE ONES YOU FAILED TO DO? (<span id="failed-count">0</span> ITEMS)</div>
+            <button class="back-btn" onclick="startFailedReview()" style="border-color: #0f0; color: #0f0; margin-right: 20px;">YES</button>
+            <button class="back-btn" onclick="closeFailedReview()" style="border-color: #f00; color: #f00;">NO</button>
+        </div>
+
+        <div id="standard-result-buttons">
             <button class="back-btn" onclick="showSets(currentLeague)" style="margin-right: 20px;">Back to Sets</button>
             <button class="back-btn" onclick="showMainMenu()">Main Menu</button>
         </div>
@@ -1006,7 +1013,7 @@
                 "Set 3": [
                     { tr: "Kimse müşterinin ne kadar bütçesi olduğunu bilmiyor", en: "Nobody knows how much budget the customer had" },
                     { tr: "Ustanın bu motoru tamir edip edemeyeceğini bilmiyorum", en: "I don't know if the mechanic will be able to fix this engine" },
-                    { tr: "Herkes onun bozuk parçayı değiştirdiğinden emin", en: "Everybody's sure that he replaced the broken part" },
+                    { tr: "Herkes onun bozuk parçayı değiştirdiından emin", en: "Everybody's sure that he replaced the broken part" },
                     { tr: "Çırak aletleri nereye koyduğunu hatırlayamıyor", en: "The apprentice can't remember where he put the tools" },
                     { tr: "Motorda yağ olup olmadığını kontrol etmek zorundasın", en: "You have to check if there was oil in the engine" },
                     { tr: "Tamirciler şanzımanın nasıl kırıldığını bulamadı (keşfedemedi)", en: "Mechanics couldn't discover how the transmission broke" },
@@ -1041,6 +1048,7 @@
         };
 
         let currentLeague = '', currentSetName = '', activeDeck = [], currentIndex = 0, isFlipped = false, scoreCorrect = 0, scoreFailed = 0, isActive = false, scoreHistory = [];
+        let failedCardsCollection = []; // Locked Cage Array for failed cards
         let completedSets = JSON.parse(localStorage.getItem('el_progress_v9')) || {};
         const leagueIds = ['iron', 'copper', 'bronze', 'silver', 'gold', 'titanium', 'platinum', 'diamond'];
         leagueIds.forEach(l => { if (!completedSets[l]) completedSets[l] = []; });
@@ -1080,7 +1088,9 @@
         }
 
         function startExercise(sName, deck) {
-            currentSetName = sName; activeDeck = [...deck].sort(() => Math.random() - 0.5);
+            currentSetName = sName; 
+            failedCardsCollection = []; // Clear completely before execution loop
+            activeDeck = [...deck].sort(() => Math.random() - 0.5);
             currentIndex = 0; scoreCorrect = 0; scoreFailed = 0; scoreHistory = []; isActive = true;
             hideAll(); document.getElementById('flashcard-area').style.display = 'block';
             document.getElementById('hud-set').innerText = sName;
@@ -1105,13 +1115,14 @@
 
         function nextCard() {
             currentIndex++;
-            if (currentIndex >= activeDeck.length) endExercise("Set Completed!");
+            if (currentIndex >= activeDeck.length) endExercise("Exercise Completed!");
             else { updateHUD(); displayCard(); }
         }
 
         function endExercise(msg) {
             isActive = false; hideAll();
-            if (currentIndex >= activeDeck.length && !completedSets[currentLeague].includes(currentSetName)) {
+            // Mark completion safely only if they completed the full main set array
+            if (currentIndex >= activeDeck.length && !document.getElementById('hud-set').innerText.includes("(Failures)") && !completedSets[currentLeague].includes(currentSetName)) {
                 completedSets[currentLeague].push(currentSetName);
                 localStorage.setItem('el_progress_v9', JSON.stringify(completedSets));
             }
@@ -1121,6 +1132,34 @@
             document.getElementById('res-percentage').innerText = total === 0 ? 0 : Math.round((scoreCorrect / total) * 100);
             document.getElementById('res-correct').innerText = scoreCorrect;
             document.getElementById('res-failed').innerText = scoreFailed;
+
+            // Interface conditional switching panel logic
+            const promptArea = document.getElementById('failed-prompt-area');
+            const standardButtons = document.getElementById('standard-result-buttons');
+
+            if (failedCardsCollection.length > 0) {
+                document.getElementById('failed-count').innerText = failedCardsCollection.length;
+                promptArea.style.display = 'block';
+                standardButtons.style.display = 'none';
+            } else {
+                promptArea.style.display = 'none';
+                standardButtons.style.display = 'block';
+            }
+        }
+
+        function startFailedReview() {
+            activeDeck = [...failedCardsCollection].sort(() => Math.random() - 0.5);
+            failedCardsCollection = []; // Empty the tracking cage array for the new loop execution
+            currentIndex = 0; scoreCorrect = 0; scoreFailed = 0; scoreHistory = []; isActive = true;
+            hideAll(); document.getElementById('flashcard-area').style.display = 'block';
+            document.getElementById('hud-set').innerText = currentSetName + " (Failures)";
+            document.getElementById('hud-total').innerText = activeDeck.length;
+            updateHUD(); displayCard();
+        }
+
+        function closeFailedReview() {
+            failedCardsCollection = []; // Clear items out cleanly
+            showSets(currentLeague);
         }
 
         function handleAction(actionType) {
@@ -1133,11 +1172,17 @@
                 scoreHistory.push('correct'); scoreCorrect++; nextCard(); 
             }
             else if (actionType === 'fail' && isFlipped) { 
-                scoreHistory.push('failed'); scoreFailed++; nextCard(); 
+                scoreHistory.push('failed'); scoreFailed++; 
+                failedCardsCollection.push(activeDeck[currentIndex]); // Push locked item to collection cage
+                nextCard(); 
             }
             else if (actionType === 'undo' && currentIndex > 0) {
                 currentIndex--; const last = scoreHistory.pop();
-                if (last === 'correct') scoreCorrect--; if (last === 'failed') scoreFailed--;
+                if (last === 'correct') scoreCorrect--; 
+                if (last === 'failed') {
+                    scoreFailed--;
+                    failedCardsCollection.pop(); // Remove locked entry upon undo action trigger execution
+                }
                 updateHUD(); 
                 document.getElementById('turkish-text').innerText = activeDeck[currentIndex].tr;
                 document.getElementById('english-text').innerText = activeDeck[currentIndex].en;
