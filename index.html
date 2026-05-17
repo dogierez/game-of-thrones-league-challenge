@@ -18,9 +18,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh; /* Changed to allow scrolling */
+            min-height: 100vh; 
             overflow-x: hidden;
-            overflow-y: auto; /* Allows scrolling on smaller screens */
+            overflow-y: auto; 
             text-align: center;
         }
 
@@ -74,7 +74,6 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.9), inset 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* Medieval Number Styling */
         .shield-number {
             font-family: 'MedievalSharp', serif;
             font-size: 56px;
@@ -90,7 +89,6 @@
             line-height: 1;
         }
 
-        /* League Colors */
         .iron-color { color: #7a7a7a; }      
         .copper-color { color: #ffa500; }    
         .bronze-color { color: #8b4513; }    
@@ -178,7 +176,6 @@
         .state-turkish { color: #ffffff; } 
         .state-english { color: #00ffff; } 
 
-        /* ON-SCREEN TOUCH CONTROLS */
         .touch-controls {
             position: absolute; 
             bottom: 20px; 
@@ -203,7 +200,6 @@
         }
         .touch-btn:active { transform: scale(0.95); }
 
-        /* --- MOBILE RESPONSIVE FIXES --- */
         @media (max-width: 800px) {
             #league-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .shield-btn { width: 140px; height: 180px; }
@@ -301,7 +297,7 @@
         <div style="font-size: 48px; color: orange; margin-bottom: 30px;">Success: <span id="res-percentage">0</span>%</div>
         <div style="font-size: 36px; margin-bottom: 40px;"><span class="score-correct">Correct: <span id="res-correct">0</span></span><br><span class="score-failed">Failed: <span id="res-failed">0</span></span></div>
         <div>
-            <button class="back-btn" onclick="showSetMenu()" style="margin-right: 20px;">Back to Sets</button>
+            <button class="back-btn" onclick="showSets(currentLeague)" style="margin-right: 20px;">Back to Sets</button>
             <button class="back-btn" onclick="showMainMenu()">Main Menu</button>
         </div>
     </div>
@@ -428,10 +424,10 @@
                     { tr: "Fincanda süt var mıydı?", en: "Was there milk in the cup?" },
                     { tr: "Barda (Pub'da) bir dart turnuvası olmayacak", en: "There won't be a dart tournament in the pub" },
                     { tr: "Bankada parası yoktu", en: "She didn't have money in the bank" },
-                    { tr: "Çantamda bir şeyin mi var?", en: "Do you have something in my bag?" },
+                    { tr: "Çantamda bir şey mi var?", en: "Is there something in my bag?" },
                     { tr: "Hiçbir yerde arkadaşları yoktu", en: "They had friends nowhere" },
                     { tr: "Çantamda hiçbir şeyim yok", en: "I have nothing in my bag" },
-                    { tr: "Aklında bir şey mi var?", en: "Do you have something in your mind?" },
+                    { tr: "Aklında bir şey mi var?", en: "Is there something in your mind?" },
                     { tr: "Herkesin zamanı var mıydı?", en: "Did everybody have time?" },
                     { tr: "Garajımızda bir şey mi var?", en: "Is there something in our garage?" },
                     { tr: "Bavulunda her şeyi vardı", en: "She had everything in her suitcase" },
@@ -450,10 +446,10 @@
                     { tr: "Çorbada tuz var mıydı?", en: "Was there salt in the soup?" },
                     { tr: "Hafta sonu bir maç olmayacak", en: "There won't be a match at the weekend" },
                     { tr: "Cüzdanında kredi kartı yoktu", en: "She didn't have a credit card in her wallet" },
-                    { tr: "Cebinde bir şey mi var?", en: "Do you have something in your pocket?" },
+                    { tr: "Cebinde bir şey mi var?", en: "Is there something in your pocket?" },
                     { tr: "Hiçbir yerde şubeleri yoktu", en: "They had branches nowhere" },
                     { tr: "Odamda hiçbir şeyim yok", en: "I have nothing in my room" },
-                    { tr: "Elinde bir şey mi var?", en: "Do you have something in your hand?" },
+                    { tr: "Elinde bir şey mi var?", en: "Is there something in your hand?" },
                     { tr: "Herkesin bir bileti var mıydı?", en: "Did everybody have a ticket?" },
                     { tr: "Bahçemizde bir şey mi var?", en: "Is there something in our garden?" },
                     { tr: "Kutusunda her şeyi vardı", en: "She had everything in her box" },
@@ -472,14 +468,14 @@
                     { tr: "Otelde açık büfe var mıydı?", en: "Was there a buffet in the hotel?" },
                     { tr: "Müzede bir rehber olmayacak", en: "There won't be a guide in the museum" },
                     { tr: "Cüzdanında parası yoktu", en: "She didn't have money in her wallet" },
-                    { tr: "Valizinde bir şey mi var?", en: "Do you have something in your suitcase?" },
+                    { tr: "Valizinde bir şey mi var?", en: "Is there something in your suitcase?" },
                     { tr: "Hiçbir yerde rezervasyonları yoktu", en: "They had reservations nowhere" },
                     { tr: "Sırt çantamda hiçbir şeyim yok", en: "I have nothing in my backpack" },
-                    { tr: "Listende bir şey mi var?", en: "Do you have something on your list?" },
+                    { tr: "Listende bir şey mi var?", en: "Is there something on your list?" },
                     { tr: "Herkesin pasaportu var mıydı?", en: "Did everybody have a passport?" },
                     { tr: "Odamızda bir şey mi var?", en: "Is there something in our room?" },
                     { tr: "Çadırında her şeyi vardı", en: "He had everything in his tent" },
-                    { tr: "Şehirde bir tur var mı?", en: "Is there a tour in the city?" },
+                    { tr: "Şehirde bir tour var mı?", en: "Is there a tour in the city?" },
                     { tr: "Kampta biri var mıydı?", en: "Was there somebody in the camp?" }
                 ],
                 "Set 4": [
@@ -494,10 +490,10 @@
                     { tr: "Reyonda ekmek var mıydı?", en: "Was there bread on the shelf?" },
                     { tr: "Mağazada bir indirim olmayacak", en: "There won't be a sale in the store" },
                     { tr: "Cebinde nakit parası yoktu", en: "She didn't have cash in her pocket" },
-                    { tr: "Alışveriş arabanda bir şey mi var?", en: "Do you have something in your cart?" },
+                    { tr: "Alışveriş arabanda bir şey mi var?", en: "Is there something in your cart?" },
                     { tr: "Hiçbir yerde ürünleri yoktu", en: "They had products nowhere" },
                     { tr: "Poşetimde hiçbir şeyim yok", en: "I have nothing in my shopping bag" },
-                    { tr: "Listende bir şey mi var?", en: "Do you have something on your shopping list?" },
+                    { tr: "Listende bir şey mi var?", en: "Is there something on your shopping list?" },
                     { tr: "Herkesin bir fişi var mıydı?", en: "Did everybody have a receipt?" },
                     { tr: "Sepetimizde bir şey mi var?", en: "Is there something in our basket?" },
                     { tr: "Paketinde her şeyi vardı", en: "She had everything in her package" },
@@ -713,7 +709,7 @@
                     { tr: "İndirim vardı ama bir tişört alamadım", en: "There was a discount but I couldn't buy a t-shirt" },
                     { tr: "İndirim olacak, bu yüzden bir tişört alabileceğim", en: "There will be a discount so I will be able to buy a t-shirt" },
                     { tr: "İndirim yoktu, yoksa bir tişört alabilirdim", en: "There wasn't a discount otherwise I could buy a t-shirt" },
-                    { tr: "O bir indirim olmayacak ve bir tişört alamıyorum", en: "That won't be a discount and I can't buy a t-shirt" },
+                    { tr: "İndirim olmayacak, bu yüzden bir tişört alamıyorum", en: "There won't be a discount so I can't buy a t-shirt" },
                     { tr: "İndirim vardı, sonra bir tişört alabildim", en: "There was a discount then I could buy a t-shirt" },
                     { tr: "İndirim yok, bu yüzden bir tişört alamıyorum", en: "There isn't a discount so I can't buy a t-shirt" },
                     { tr: "İndirim olmayacak ve bir tişört alamayacağım", en: "There won't be a discount and I won't be able to buy a t-shirt" },
@@ -744,7 +740,7 @@
                     { tr: "Üniversite tezini iade etmişti, yoksa mezuniyet için başvuramazdı", en: "The university had returned her thesis otherwise she couldn't apply for graduation" },
                     { tr: "Üniversite tezini tutuyordu ama kredileriyle mezun olabiliyordu", en: "The university was keeping her thesis but she could graduate with her credits" },
                     { tr: "Profesör ek süre vermezdi ama dekan ek süre verirdi", en: "The professor didn't use to give extra time but the dean used to give extra time" },
-                    { tr: "Burs için başvurmuştu ama üniversite bursunu onaylamadı", en: "She had applied for a scholarship but the university didn't approve her scholarship" },
+                    { tr: "Burs için başvurmuştu ama university bursunu onaylamadı", en: "She had applied for a scholarship but the university didn't approve her scholarship" },
                     { tr: "Kampüse taşınıyordu, bu yüzden yurt odası için başvurmak zorundaydı", en: "She was moving to campus so she had to apply for a dorm room" },
                     { tr: "Profesör taslağını iade etti, sonra başka bir makale yazabildi", en: "The professor returned her draft then she could write another essay" },
                     { tr: "Okul kitapları gönderirdi ama öğrenciler kayıt ücretlerini ödemek zorundaydı", en: "The school used to send the books but the students had to pay the registration fees" },
@@ -768,18 +764,18 @@
                     { tr: "Güvenlik yaka kartlarını tarıyordu, sonra güvenlik yüzleri tarıyordu", en: "The security was scanning the badges then the security was scanning the faces" }
                 ],
                 "Set 4": [
-                    { tr: "Vize bekliyordu, yoksa ülkeden ayrılamazdı", en: "She was waiting for Visa otherwise she couldn't leave the country" },
-                    { tr: "Vize beklemişti, bu yüzden hiçbir yere gidemiyordu", en: "She had waited for Visa so she could go nowhere" },
-                    { tr: "Vize beklerdi ve ülkesinde kalmak zorundaydı", en: "She used to wait for Visa and she had to stay in her country" },
-                    { tr: "Konsolosluk pasaportunu iade etmişti, yoksa yeni vize için başvuramazdı", en: "The consulate had returned her passport otherwise she couldn't apply for new Visa" },
+                    { tr: "Vize bekliyordu, yoksa ülkeden ayrılamazdı", en: "She was waiting for a visa otherwise she couldn't leave the country" },
+                    { tr: "Vize beklemişti, bu yüzden hiçbir yere gidemiyordu", en: "She had waited for a visa so she could go nowhere" },
+                    { tr: "Vize beklerdi ve ülkesinde kalmak zorundaydı", en: "She used to wait for a visa and she had to stay in her country" },
+                    { tr: "Konsolosluk pasaportunu iade etmişti, yoksa yeni vize için başvuramazdı", en: "The consulate had returned her passport otherwise she couldn't apply for a new visa" },
                     { tr: "Konsolosluk pasaportunu tutuyordu ama kimlik kartıyla seyahat edebiliyordu", en: "The consulate was keeping her passport but she could travel with her ID card" },
-                    { tr: "Konsolosluk vize vermezdi ama büyükelçilik vize verirdi", en: "The consulate didn't use to give Visa but the embassy used to give Visa" },
-                    { tr: "Vize için başvurmuştu ama konsolosluk vizesini onaylamadı", en: "She had applied for Visa but the consulate didn't approve her visa" },
-                    { tr: "İngiltere'ye seyahat ediyordu, bu yüzden vize için başvurmak zorundaydı", en: "She was traveling to England so she had to apply for a Visa" },
-                    { tr: "Konsolosluk pasaportunu iade etti, sonra başka bir vize için başvurabildi", en: "The consulate returned her passport then she could apply for another Visa" },
-                    { tr: "Büyükelçilik pasaportları gönderirdi ama vatandaşlar kargo ücretlerini ödemek zorundaydı", en: "The embassy used to send the passports but the citizens had to pay the cargo fees" },
+                    { tr: "Konsolosluk vize vermezdi ama büyükelçilik vize verirdi", en: "The consulate didn't use to give a visa but the embassy used to give a visa" },
+                    { tr: "Vize için başvurmuştu ama konsolosluk vizesini onaylamadı", en: "She had applied for a visa but the consulate didn't approve her visa" },
+                    { tr: "İngiltere'ye seyahat ediyordu, bu yüzden vize için başvurmak zorundaydı", en: "She was traveling to England so she had to apply for a visa" },
+                    { tr: "Konsolosluk pasaportunu iade etti, sonra başka bir vize için başvurabildi", en: "The consulate returned her passport then she could apply for another visa" },
+                    { tr: "Büyükelçilik pasaportları gönderirdi ama vatandaşlar kargo ücretlerini ödemek zorundaydı", en: "The embassy used to send the passports but the citizens had to pay the shipping fees" },
                     { tr: "Konsolosluklar pasaportları tutuyordu, bu yüzden vatandaşlar hiçbir yere seyahat edemiyordu", en: "The consulates were holding the passports so the citizens could travel nowhere" },
-                    { tr: "Ticari bir vizeye ihtiyacı vardı ama turistik bir vize için başvurmuştu", en: "She needed a commercial Visa but she had applied for a touristic Visa" },
+                    { tr: "Ticari bir vizeye ihtiyacı vardı ama turistik bir vize için başvurmuştu", en: "She needed a commercial visa but she had applied for a tourist visa" },
                     { tr: "Konsolosluk pasaportları tarıyordu, sonra konsolosluk parmak izlerini tarıyordu", en: "The consulate was scanning the passports then the consulate was scanning the fingerprints" }
                 ]
             },
@@ -791,7 +787,7 @@
                     { tr: "Teslim tarihinden önce projeyi bitirdik", en: "We finished the project before the deadline" },
                     { tr: "Çok çalıştığımızda projeyi bitirdik", en: "We finished the project when we worked hard" },
                     { tr: "Projeyi bitirene kadar çalışacağız", en: "We will work until we finish the project" },
-                    { tr: "Çok çalıştığımızdan dan dolayı projeyi bitirdik", en: "We finished the project because we worked hard" },
+                    { tr: "Çok çalıştığımızdan dolayı projeyi bitirdik", en: "We finished the project because we worked hard" },
                     { tr: "Takım çalışmasından dolayı projeyi bitirdik", en: "We finished the project due to teamwork" },
                     { tr: "Takım çalışmasına rağmen projeyi bitiremedik", en: "We didn't finish the project despite teamwork" },
                     { tr: "Ofiste kalırken projeyi bitirdik", en: "We finished the project while we were staying at the office" },
@@ -1045,7 +1041,7 @@
         };
 
         let currentLeague = '', currentSetName = '', activeDeck = [], currentIndex = 0, isFlipped = false, scoreCorrect = 0, scoreFailed = 0, isActive = false, scoreHistory = [];
-        let completedSets = JSON.parse(localStorage.getItem('el_progress_v8')) || {};
+        let completedSets = JSON.parse(localStorage.getItem('el_progress_v9')) || {};
         const leagueIds = ['iron', 'copper', 'bronze', 'silver', 'gold', 'titanium', 'platinum', 'diamond'];
         leagueIds.forEach(l => { if (!completedSets[l]) completedSets[l] = []; });
 
@@ -1117,7 +1113,7 @@
             isActive = false; hideAll();
             if (currentIndex >= activeDeck.length && !completedSets[currentLeague].includes(currentSetName)) {
                 completedSets[currentLeague].push(currentSetName);
-                localStorage.setItem('el_progress_v8', JSON.stringify(completedSets));
+                localStorage.setItem('el_progress_v9', JSON.stringify(completedSets));
             }
             let total = scoreCorrect + scoreFailed;
             document.getElementById('results-screen').style.display = 'flex';
@@ -1127,7 +1123,6 @@
             document.getElementById('res-failed').innerText = scoreFailed;
         }
 
-        // --- NEW CENTRALIZED ACTION HANDLER (For Touch & Keyboard) ---
         function handleAction(actionType) {
             if (!isActive) return;
 
