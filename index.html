@@ -176,6 +176,37 @@
         .state-turkish { color: #ffffff; } 
         .state-english { color: #00ffff; } 
 
+        /* Custom Dictionary Tooltip & Clickable Words CSS */
+        .clickable-word {
+            cursor: pointer;
+            border-bottom: 2px dashed rgba(255, 255, 255, 0.4);
+            transition: color 0.2s, border-color 0.2s;
+            display: inline-block;
+            margin: 0 4px;
+        }
+        .clickable-word:hover {
+            color: #ffe81f;
+            border-bottom-color: #ffe81f;
+        }
+        
+        #word-tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #ffe81f;
+            color: #ffe81f;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            display: none;
+            transform: translate(-50%, -120%);
+            white-space: nowrap;
+        }
+
         .touch-controls {
             position: absolute; 
             bottom: 20px; 
@@ -208,6 +239,7 @@
             .hud { font-size: 16px; top: 10px; }
             .sentence { font-size: 6vw; }
             .touch-btn { padding: 10px 12px; font-size: 12px; }
+            #word-tooltip { font-size: 18px; }
         }
     </style>
 </head>
@@ -281,6 +313,8 @@
             <div id="turkish-text" class="sentence state-turkish"></div>
             <div id="english-text" class="sentence state-english" style="visibility: hidden;"></div>
         </div>
+
+        <div id="word-tooltip"></div>
         
         <div class="touch-controls">
             <button class="touch-btn" onclick="handleAction('reveal')">👁️ Reveal</button>
@@ -310,6 +344,99 @@
     </div>
 
     <script>
+        // --- 1. EXACT MATCH DICTIONARY ---
+        // Used for short tricky words, exact noun forms, or irregulars to avoid false positive roots
+        const exactDictionary = {
+            "çok": "very / much", "için": "for", "ama": "but", "ve": "and", "daha": "more", 
+            "fazla": "much / more", "diye": "so that", "bu": "this", "şekilde": "way", 
+            "kadar": "until / up to", "sonra": "after", "önce": "before", "gibi": "like",
+            "ile": "with", "olan": "being", "her": "every", "hiç": "none / ever", "yoksa": "otherwise",
+            "ne": "what", "nerede": "where", "nasıl": "how", "hangi": "which", "kimin": "whose",
+            "neden": "why", "bizi": "us", "bizim": "our", "sizi": "you", "onları": "them",
+            "araba": "car", "arabayı": "car", "arabalar": "cars", "arabası": "car", "arabasını": "car",
+            "kalem": "pencil", "su": "water", "çay": "tea", "süt": "milk", "et": "meat", "yeni": "new"
+        };
+
+        // --- 2. ROOT MATCH DICTIONARY ---
+        // Turkish agglutination solver: Checks if the clicked word STARTS WITH one of these roots.
+        const rootDictionary = {
+            // Verbs
+            "iç": "to drink", "ye": "to eat", "al": "to buy / to take", "aç": "to open / to turn on",
+            "izle": "to watch", "yıka": "to wash", "yık": "to wash", "oku": "to read", "ara": "to call / to search",
+            "oyna": "to play", "kapat": "to close / to turn off", "temizle": "to clean", "bitir": "to finish",
+            "harca": "to spend", "bul": "to find", "seç": "to choose", "kullan": "to use", "dinle": "to listen",
+            "kur": "to set", "gönder": "to send", "öde": "to pay", "gir": "to enter", "katıl": "to attend / to join",
+            "kilitle": "to lock", "çalış": "to work / to study", "sat": "to sell", "boya": "to paint",
+            "indir": "to download", "çık": "to go out", "dene": "to try", "çek": "to take (a photo)",
+            "kirala": "to rent", "değiştir": "to change", "planla": "to plan", "geç": "to cross / to pass",
+            "unut": "to forget", "taşı": "to carry", "yap": "to do", "sev": "to like / to love",
+            "kopyala": "to copy", "sor": "to ask", "ezberle": "to memorize", "yaz": "to write",
+            "getir": "to bring", "öğren": "to learn", "çöz": "to solve", "tercih": "to prefer",
+            "bekle": "to wait", "ayrıl": "to leave / to quit", "incele": "to examine", "şikayet": "to complain",
+            "hızlan": "to accelerate", "artır": "to increase", "düşür": "to decrease", "küçül": "to get small",
+            "yorul": "to get tired", "kirlen": "to get dirty", "sinirlen": "to get angry", "pazarlık": "to bargain",
+            "güçlen": "to get strong", "sakatlan": "to get injured", "pişir": "to cook", "zayıfla": "to get thin",
+            "şişmanla": "to get fat", "hastalan": "to get ill", "bil": "to know", "hatırla": "to remember",
+            "keşfet": "to discover", "yardım": "to help", "durdur": "to stop", "ulaş": "to reach",
+            "istifa": "to resign", "cevap": "to answer", "ikna": "to convince", "tasarla": "to design",
+            "kaç": "to escape", "hedef": "to target", "takip": "to follow", "anla": "to understand",
+            "yakala": "to catch", "başvur": "to apply", "onayla": "to approve", "kontrol": "to check / to control",
+            "tamir": "to repair / to fix", "iptal": "to cancel", "park": "to park", "biriktir": "to save (money)",
+            "sipariş": "to order", "ziyaret": "to visit", "öd": "to pay", "şüphelen": "to suspect",
+            "imzala": "to sign", "konuş": "to talk", "buluş": "to meet", "göster": "to show",
+            "uç": "to fly", "rekabet": "to compete", "kâr": "to profit", "bağır": "to shout", "uyar": "to warn",
+            "hazırla": "to prepare", "kal": "to stay", "yetiş": "to catch up", "aktar": "to transfer",
+            
+            // Key Nouns mapped so they still translate regardless of suffixes (e.g. takımı -> team)
+            "takım": "team", "proje": "project", "rağmen": "despite", "dolayı": "because of",
+            "teslim": "delivery", "tarih": "date", "ofis": "office", "toplantı": "meeting",
+            "sözleşme": "contract", "sorun": "problem", "teknik": "technical", "saat": "hour",
+            "emekli": "retired", "iş": "job / business", "ekonomik": "economic", "kriz": "crisis",
+            "yurt": "country / dorm", "borç": "debt", "maaş": "salary", "avukat": "lawyer",
+            "yolcu": "passenger", "bilet": "ticket", "pilot": "pilot", "uçak": "plane",
+            "havayolu": "airline", "fiyat": "price", "yakıt": "fuel", "rakip": "rival",
+            "uçuş": "flight", "iflas": "bankruptcy", "kabin": "cabin", "memur": "officer / attendant",
+            "üniforma": "uniform", "kaptan": "captain", "ekip": "crew", "jet": "jet",
+            "oyuncu": "player", "teklif": "offer", "başkan": "president", "kulüp": "club",
+            "taraftar": "fan", "federasyon": "federation", "antrenman": "training",
+            "forma": "jersey", "antrenör": "coach", "menajer": "manager", "yetenek": "talent",
+            "aşçı": "chef", "yemek": "food", "malzeme": "ingredient", "porsiyon": "portion",
+            "yönetici": "manager", "restoran": "restaurant", "müşteri": "customer",
+            "reklam": "advertisement", "patron": "boss", "maliyet": "cost", "sebze": "vegetable",
+            "çırak": "apprentice", "önlük": "apron", "yazılımcı": "developer", "kod": "code",
+            "şirket": "company", "aday": "candidate", "çalışan": "employee", "program": "program",
+            "stajyer": "intern", "bilgisayar": "computer", "girişimci": "entrepreneur",
+            "uygulama": "app", "satıcı": "seller", "ürün": "product", "hükümet": "government",
+            "öğretmen": "teacher", "öğrenci": "student", "fabrika": "factory", "doktor": "doctor",
+            "çocuk": "child / boy", "kız": "girl", "hırsız": "thief", "polis": "police",
+            "belge": "document", "mühendis": "engineer", "sistem": "system", "müdür": "manager",
+            "korsan": "hacker", "şifre": "password", "güvenlik": "security", "görevli": "guard",
+            "ziyaretçi": "visitor", "mimar": "architect", "bina": "building", "seminer": "seminar",
+            "soru": "question", "usta": "mechanic / master", "motor": "engine", "parça": "part",
+            "alet": "tool", "yağ": "oil", "şanzıman": "transmission", "akü": "battery",
+            "motosiklet": "motorcycle", "radyatör": "radiator", "araba": "car", "araç": "vehicle",
+            "ses": "noise", "soyguncu": "robber", "altın": "gold", "dedektif": "detective",
+            "dava": "case", "banka": "bank", "sürücü": "driver", "kasa": "safe / checkout",
+            "alarm": "alarm", "çete": "gang", "hedef": "target", "elmas": "diamond", "çaba": "effort",
+            "helikopter": "helicopter", "çatı": "roof", "adam": "man", "plan": "plan",
+            "bilgi": "information", "casus": "spy", "profesyonel": "professional", "soygun": "robbery / heist",
+            "çanta": "bag", "zaman": "time", "kredi": "credit", "kart": "card", "puan": "point",
+            "market": "supermarket", "kuyruk": "queue", "etkinlik": "event", "fiş": "receipt",
+            "hata": "mistake", "reyon": "shelf", "ekmek": "bread", "indirim": "sale / discount",
+            "nakit": "cash", "poşet": "shopping bag", "liste": "list", "sepet": "basket",
+            "paket": "package", "sokak": "street", "fırın": "bakery", "otel": "hotel", "oda": "room", 
+            "lobi": "lobby", "harita": "map", "tatil": "holiday", "havalimanı": "airport", "sahil": "beach", 
+            "pasaport": "passport", "vize": "visa", "büfe": "buffet", "rehber": "guide", "müze": "museum", 
+            "cüzdan": "wallet", "valiz": "suitcase", "rezervasyon": "reservation", "çadır": "tent", 
+            "şehir": "city", "kamp": "camp", "fikir": "idea", "şans": "chance", "fırsat": "opportunity",
+            "trafik": "traffic", "salon": "hall", "sınav": "exam", "tabak": "plate",
+            "çorba": "soup", "tuz": "salt", "hafta": "week", "maç": "match", "şube": "branch",
+            "el": "hand", "bahçe": "garden", "kutu": "box", "festival": "festival"
+        };
+
+        // Sort roots by length (longest to shortest) so 'çalış' matches before 'çal', etc.
+        const sortedRoots = Object.keys(rootDictionary).sort((a, b) => b.length - a.length);
+
         const vocabularyData = {
             iron: {
                 "Set 1": [
@@ -1048,7 +1175,7 @@
         };
 
         let currentLeague = '', currentSetName = '', activeDeck = [], currentIndex = 0, isFlipped = false, scoreCorrect = 0, scoreFailed = 0, isActive = false, scoreHistory = [];
-        let failedCardsCollection = []; // Locked Cage Array for failed cards
+        let failedCardsCollection = []; 
         let completedSets = JSON.parse(localStorage.getItem('el_progress_v9')) || {};
         const leagueIds = ['iron', 'copper', 'bronze', 'silver', 'gold', 'titanium', 'platinum', 'diamond'];
         leagueIds.forEach(l => { if (!completedSets[l]) completedSets[l] = []; });
@@ -1089,7 +1216,7 @@
 
         function startExercise(sName, deck) {
             currentSetName = sName; 
-            failedCardsCollection = []; // Clear completely before execution loop
+            failedCardsCollection = []; 
             activeDeck = [...deck].sort(() => Math.random() - 0.5);
             currentIndex = 0; scoreCorrect = 0; scoreFailed = 0; scoreHistory = []; isActive = true;
             hideAll(); document.getElementById('flashcard-area').style.display = 'block';
@@ -1105,11 +1232,70 @@
         }
 
         function displayCard() {
-            document.getElementById('turkish-text').innerText = activeDeck[currentIndex].tr;
+            const trText = activeDeck[currentIndex].tr;
+            const trContainer = document.getElementById('turkish-text');
+            trContainer.innerHTML = ''; 
+
+            const words = trText.split(' ');
+            
+            words.forEach((word, idx) => {
+                const span = document.createElement('span');
+                span.innerText = word + (idx === words.length - 1 ? '' : ' ');
+                span.className = 'clickable-word';
+                
+                const cleanWord = word.replace(/[^\w\sğüşıöçĞÜŞİÖÇ]/gi, '').toLocaleLowerCase('tr-TR');
+                
+                span.onclick = (e) => {
+                    e.stopPropagation(); 
+                    showTooltip(e, cleanWord, span);
+                };
+                
+                trContainer.appendChild(span);
+            });
+
             document.getElementById('english-text').innerText = activeDeck[currentIndex].en;
             document.getElementById('english-text').style.visibility = 'hidden';
             isFlipped = false;
         }
+
+        // --- NEW SMART TOOLTIP ALGORITHM ---
+        function showTooltip(event, cleanWord, spanElement) {
+            const tooltip = document.getElementById('word-tooltip');
+            let meaning = exactDictionary[cleanWord]; // 1. Check for exact match first
+            
+            if (!meaning) {
+                // 2. Check the Root Dictionary matching against sorted root prefixes
+                for (let i = 0; i < sortedRoots.length; i++) {
+                    if (cleanWord.startsWith(sortedRoots[i])) {
+                        meaning = rootDictionary[sortedRoots[i]];
+                        break; // Stop at the longest matched root
+                    }
+                }
+            }
+            
+            if (meaning) {
+                tooltip.innerText = meaning;
+            } else {
+                tooltip.innerText = "No translation found"; 
+            }
+            
+            const rect = spanElement.getBoundingClientRect();
+            tooltip.style.left = (rect.left + (rect.width / 2)) + 'px';
+            tooltip.style.top = (rect.top - 5) + 'px';
+            tooltip.style.display = 'block';
+
+            clearTimeout(tooltip.timeoutId);
+            tooltip.timeoutId = setTimeout(() => {
+                tooltip.style.display = 'none';
+            }, 2500);
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('clickable-word')) {
+                document.getElementById('word-tooltip').style.display = 'none';
+            }
+        });
+        // -----------------------------------
 
         function flipCard() { if (!isFlipped) { document.getElementById('english-text').style.visibility = 'visible'; isFlipped = true; } }
 
@@ -1121,7 +1307,6 @@
 
         function endExercise(msg) {
             isActive = false; hideAll();
-            // Mark completion safely only if they completed the full main set array
             if (currentIndex >= activeDeck.length && !document.getElementById('hud-set').innerText.includes("(Failures)") && !completedSets[currentLeague].includes(currentSetName)) {
                 completedSets[currentLeague].push(currentSetName);
                 localStorage.setItem('el_progress_v9', JSON.stringify(completedSets));
@@ -1133,7 +1318,6 @@
             document.getElementById('res-correct').innerText = scoreCorrect;
             document.getElementById('res-failed').innerText = scoreFailed;
 
-            // Interface conditional switching panel logic
             const promptArea = document.getElementById('failed-prompt-area');
             const standardButtons = document.getElementById('standard-result-buttons');
 
@@ -1149,7 +1333,7 @@
 
         function startFailedReview() {
             activeDeck = [...failedCardsCollection].sort(() => Math.random() - 0.5);
-            failedCardsCollection = []; // Empty the tracking cage array for the new loop execution
+            failedCardsCollection = []; 
             currentIndex = 0; scoreCorrect = 0; scoreFailed = 0; scoreHistory = []; isActive = true;
             hideAll(); document.getElementById('flashcard-area').style.display = 'block';
             document.getElementById('hud-set').innerText = currentSetName + " (Failures)";
@@ -1158,7 +1342,7 @@
         }
 
         function closeFailedReview() {
-            failedCardsCollection = []; // Clear items out cleanly
+            failedCardsCollection = []; 
             showSets(currentLeague);
         }
 
@@ -1173,7 +1357,7 @@
             }
             else if (actionType === 'fail' && isFlipped) { 
                 scoreHistory.push('failed'); scoreFailed++; 
-                failedCardsCollection.push(activeDeck[currentIndex]); // Push locked item to collection cage
+                failedCardsCollection.push(activeDeck[currentIndex]); 
                 nextCard(); 
             }
             else if (actionType === 'undo' && currentIndex > 0) {
@@ -1181,11 +1365,10 @@
                 if (last === 'correct') scoreCorrect--; 
                 if (last === 'failed') {
                     scoreFailed--;
-                    failedCardsCollection.pop(); // Remove locked entry upon undo action trigger execution
+                    failedCardsCollection.pop(); 
                 }
                 updateHUD(); 
-                document.getElementById('turkish-text').innerText = activeDeck[currentIndex].tr;
-                document.getElementById('english-text').innerText = activeDeck[currentIndex].en;
+                displayCard(); 
                 document.getElementById('english-text').style.visibility = 'visible'; 
                 isFlipped = true;
             }
