@@ -200,34 +200,6 @@
         }
         .touch-btn:active { transform: scale(0.95); }
 
-        /* CUSTOM DICTIONARY CSS */
-        .dict-word {
-            color: #ffe81f;
-            text-decoration: underline;
-            text-decoration-style: dotted;
-            cursor: pointer;
-            position: relative;
-            transition: 0.2s;
-        }
-        .dict-word:hover { color: #0f0; }
-
-        #custom-tooltip {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.95);
-            color: #0f0;
-            border: 2px solid #0f0;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-family: monospace;
-            font-size: 22px;
-            pointer-events: none;
-            display: none;
-            z-index: 1000;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-            text-transform: uppercase;
-            transform: translate(-50%, -100%);
-        }
-
         @media (max-width: 800px) {
             #league-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .shield-btn { width: 140px; height: 180px; }
@@ -236,13 +208,10 @@
             .hud { font-size: 16px; top: 10px; }
             .sentence { font-size: 6vw; }
             .touch-btn { padding: 10px 12px; font-size: 12px; }
-            #custom-tooltip { font-size: 16px; }
         }
     </style>
 </head>
 <body>
-
-    <div id="custom-tooltip"></div>
 
     <div id="main-menu" class="menu-container">
         <h1 style="font-size: 42px; letter-spacing: 2px; margin-bottom: 10px;">SELECT LEAGUE</h1>
@@ -341,58 +310,6 @@
     </div>
 
     <script>
-        // The Offline Internal Dictionary - Add or modify terms here easily!
-        const offlineDictionary = {
-            "teminatını": "deposit",
-            "teminat": "deposit",
-            "şanzımanı": "transmission",
-            "şanzıman": "transmission",
-            "bayi": "dealer",
-            "gümrük": "customs",
-            "yan sanayi": "aftermarket",
-            "yedek parçaları": "spare parts",
-            "yedek parça": "spare part",
-            "bursunu": "scholarship",
-            "burs": "scholarship",
-            "tezini": "thesis",
-            "dekan": "dean",
-            "diplomasını": "diploma",
-            "onay": "approval",
-            "kalıcı": "permanent",
-            "geçici": "temporary",
-            "konsolosluk": "consulate",
-            "büyükelçilik": "embassy",
-            "vize": "visa",
-            "teslim tarihinden": "deadline",
-            "takım çalışmasından": "teamwork",
-            "emekli": "retired",
-            "krizden": "crisis",
-            "krize": "crisis",
-            "şüphelendikten": "suspected",
-            "anlaşmazlıktan": "disagreement",
-            "şikayet": "complain",
-            "yükseltme": "upgrade",
-            "aktarma": "transfer",
-            "isteksiz": "reluctant",
-            "iflas": "bankrupted",
-            "pazarlık": "bargain",
-            "toptan": "in bulk",
-            "rakipleriyle": "rivals",
-            "gönüllü": "voluntary",
-            "dikkatsiz": "careless",
-            "indirim": "discount",
-            "soyguncuların": "robbers",
-            "soygunları": "heists",
-            "soygun": "robbery",
-            "casus": "spy",
-            "istifa": "resigned",
-            "korsanlarının": "hackers",
-            "çöktüğünü": "crashed",
-            "radyatörü": "radiator",
-            "akünün": "battery",
-            "elmasları": "diamonds"
-        };
-
         const vocabularyData = {
             iron: {
                 "Set 1": [
@@ -504,7 +421,7 @@
             copper: {
                 "Set 1": [
                     { tr: "Herkesin okulda bir problemi vardı", en: "Everybody had a problem in the school" },
-                    { tr: "New York'ta hiç kimsemiz yok", en: "We have nobody in New York" },
+                    { tr: "New York'ta kimsemiz yok", en: "We have nobody in New York" },
                     { tr: "Garajda bir araba var mı?", en: "Is there a car in the garage?" },
                     { tr: "Bankada paramız olacak", en: "We will have money in the bank" },
                     { tr: "Ofiste zamanın yoktu", en: "You didn't have time in the office" },
@@ -526,7 +443,7 @@
                 ],
                 "Set 2": [
                     { tr: "Herkesin toplantıda bir fikri vardı", en: "Everybody had an idea in the meeting" },
-                    { tr: "Şirkette hiç kimsemiz yok", en: "We have nobody in the company" },
+                    { tr: "Şirkette kimsemiz yok", en: "We have nobody in the company" },
                     { tr: "Odada bir bilgisayar var mı?", en: "Is there a computer in the room?" },
                     { tr: "Gelecekte şansımız olacak", en: "We will have a chance in the future" },
                     { tr: "Toplantıda fırsatın yoktu", en: "You didn't have an opportunity in the meeting" },
@@ -548,7 +465,7 @@
                 ],
                 "Set 3": [
                     { tr: "Herkesin otelde bir odası vardı", en: "Everybody had a room in the hotel" },
-                    { tr: "Paris'te hiç kimsemiz yok", en: "We have nobody in Paris" },
+                    { tr: "Paris'te kimsemiz yok", en: "We have nobody in Paris" },
                     { tr: "Lobide bir harita var mı?", en: "Is there a map in the lobby?" },
                     { tr: "Tatilde arabamız olacak", en: "We will have a car on holiday" },
                     { tr: "Havalimanında zamanın yoktu", en: "You didn't have time at the airport" },
@@ -565,12 +482,12 @@
                     { tr: "Herkesin pasaportu var mıydı?", en: "Did everybody have a passport?" },
                     { tr: "Odamızda bir şey mi var?", en: "Is there something in our room?" },
                     { tr: "Çadırında her şeyi vardı", en: "He had everything in his tent" },
-                    { tr: "Şehirde bir tur var mı?", en: "Is there a tour in the city?" },
+                    { tr: "Şehirde bir tour var mı?", en: "Is there a tour in the city?" },
                     { tr: "Kampta biri var mıydı?", en: "Was there somebody in the camp?" }
                 ],
                 "Set 4": [
                     { tr: "Herkesin kasada bir problemi vardı", en: "Everybody had a problem at the checkout" },
-                    { tr: "Mağazada hiç kimsemiz yok", en: "We have nobody in the store" },
+                    { tr: "Mağazada kimsemiz yok", en: "We have nobody in the store" },
                     { tr: "Vitrinde bir çanta var mı?", en: "Is there a bag in the shop window?" },
                     { tr: "Kartımızda puanımız olacak", en: "We will have points on our card" },
                     { tr: "Markette zamanın yoktu", en: "You didn't have time in the supermarket" },
@@ -1060,7 +977,7 @@
             },
             diamond: {
                 "Set 1": [
-                    { tr: "Hiç kimse onun ne kadar parası olduğunu bilmiyor", en: "Nobody knows how much money he had" },
+                    { tr: "Kimse onun ne kadar parası olduğunu bilmiyor", en: "Nobody knows how much money he had" },
                     { tr: "Bu problemi çözebilecek misin bilmiyorum", en: "I don't know if you will be able to solve this problem" },
                     { tr: "Herkes onun ofisimizi ziyaret ettiğinden emin", en: "Everybody's sure that she visited our office" },
                     { tr: "Arabasını nereye park ettiğini hatırlayamıyor", en: "She can't remember where she parked her car" },
@@ -1068,7 +985,7 @@
                     { tr: "Doktorlar küçük çocuğun nasıl hastalandığını bulamadı (keşfedemedi)", en: "Doctors couldn't discover how the little boy got ill" },
                     { tr: "Ünlü çiftin boşanması bir sürprizdi", en: "It was a surprise that the famous couple divorced" },
                     { tr: "Kameralar hırsızların kimin arabasını çaldığını gösterdi", en: "Cameras showed whose car the thieves stole" },
-                    { tr: "Ağlayan kıza hiç kimse yardım etmedi", en: "Nobody helped the crying girl" },
+                    { tr: "Ağlayan kıza kimse yardım etmedi", en: "Nobody helped the crying girl" },
                     { tr: "Servis edilen kahveyi bitiremedim", en: "I couldn't finish the served coffee" },
                     { tr: "Polis kırmızı ışıkta geçen arabaları durduruyordu", en: "The police were stopping the cars passing at the red light" },
                     { tr: "Banka tarafından gönderilen belgeyi almadım", en: "I didn't receive the document sent by the bank" },
@@ -1077,7 +994,7 @@
                     { tr: "Toplantı sırasında servis edilen kahve soğuktu", en: "The coffee served during the meeting was cold" }
                 ],
                 "Set 2": [
-                    { tr: "Hiç kimse şirketin ne kadar borcu olduğunu bilmiyor", en: "Nobody knows how much debt the company had" },
+                    { tr: "Kimse şirketin ne kadar borcu olduğunu bilmiyor", en: "Nobody knows how much debt the company had" },
                     { tr: "Bu projeyi bitirebilecek misin bilmiyorum", en: "I don't know if you will be able to finish this project" },
                     { tr: "Herkes onun toplantıya katıldığından emin", en: "Everybody's sure that he attended the meeting" },
                     { tr: "Dosyaları nereye koyduğunu hatırlayamıyor", en: "He can't remember where he put the files" },
@@ -1085,7 +1002,7 @@
                     { tr: "Mühendisler sistemin nasıl çöktüğünü bulamadı (keşfedemedi)", en: "Engineers couldn't discover how the system crashed" },
                     { tr: "Yeni müdürün istifa etmesi bir sürprizdi", en: "It was a surprise that the new manager resigned" },
                     { tr: "Belgeler bilgisayar korsanlarının kimin şifresini çaldığını gösterdi", en: "Documents showed whose password the hackers stole" },
-                    { tr: "Bağıran müşteriye hiç kimse cevap vermedi", en: "Nobody answered the shouting customer" },
+                    { tr: "Bağıran müşteriye kimse cevap vermedi", en: "Nobody answered the shouting customer" },
                     { tr: "İptal edilen toplantıyı yeniden planlayamadım", en: "I couldn't reschedule the canceled meeting" },
                     { tr: "Güvenlik görevlileri kapıda bekleyen ziyaretçileri kontrol ediyordu", en: "The security guards were checking the visitors waiting at the door" },
                     { tr: "Patron tarafından yazılan e-postayı okumadım", en: "I didn't read the email written by the boss" },
@@ -1094,15 +1011,15 @@
                     { tr: "Seminer sırasında sorulan sorular zordu", en: "The questions asked during the seminar were difficult" }
                 ],
                 "Set 3": [
-                    { tr: "Hiç kimse müşterinin ne kadar bütçesi olduğunu bilmiyor", en: "Nobody knows how much budget the customer had" },
+                    { tr: "Kimse müşterinin ne kadar bütçesi olduğunu bilmiyor", en: "Nobody knows how much budget the customer had" },
                     { tr: "Ustanın bu motoru tamir edip edemeyeceğini bilmiyorum", en: "I don't know if the mechanic will be able to fix this engine" },
-                    { tr: "Herkes onun bozuk parçayı değiştirdiğinden emin", en: "Everybody's sure that he replaced the broken part" },
+                    { tr: "Herkes onun bozuk parçayı değiştirdiından emin", en: "Everybody's sure that he replaced the broken part" },
                     { tr: "Çırak aletleri nereye koyduğunu hatırlayamıyor", en: "The apprentice can't remember where he put the tools" },
                     { tr: "Motorda yağ olup olmadığını kontrol etmek zorundasın", en: "You have to check if there was oil in the engine" },
                     { tr: "Tamirciler şanzımanın nasıl kırıldığını bulamadı (keşfedemedi)", en: "Mechanics couldn't discover how the transmission broke" },
                     { tr: "Yeni akünün bitmesi bir sürprizdi", en: "It was a surprise that the new battery died" },
                     { tr: "Kameralar hırsızların kimin motosikletini çaldığını gösterdi", en: "Cameras showed whose motorcycle the thieves stole" },
-                    { tr: "Sızdıran radyatörü hiç kimse tamir etmedi", en: "Nobody fixed the leaking radiator" },
+                    { tr: "Sızdıran radyatörü kimse tamir etmedi", en: "Nobody fixed the leaking radiator" },
                     { tr: "Sipariş edilen yedek parçayı kullanamadım", en: "I couldn't use the ordered spare part" },
                     { tr: "Usta, garajda bekleyen arabaları kontrol ediyordu", en: "The master was checking the cars waiting in the garage" },
                     { tr: "Fabrika tarafından gönderilen şanzımanı almadım", en: "I didn't receive the transmission sent by the factory" },
@@ -1111,7 +1028,7 @@
                     { tr: "Test sürüşü sırasında duyulan ses korkutucuydu", en: "The noise heard during the test drive was scary" }
                 ],
                 "Set 4": [
-                    { tr: "Hiç kimse soyguncuların ne kadar altını olduğunu bilmiyor", en: "Nobody knows how much gold the robbers had" },
+                    { tr: "Kimse soyguncuların ne kadar altını olduğunu bilmiyor", en: "Nobody knows how much gold the robbers had" },
                     { tr: "Dedektifin bu davayı çözüp çözemeyeceğini bilmiyorum", en: "I don't know if the detective will be able to solve this case" },
                     { tr: "Herkes onların bankayı soyduğundan emin", en: "Everybody's sure that they robbed the bank" },
                     { tr: "Sürücü kaçış arabasını nereye park ettiğini hatırlayamıyor", en: "The driver can't remember where he parked the getaway car" },
@@ -1119,7 +1036,7 @@
                     { tr: "Polis, hırsızların nasıl kaçtığını bulamadı (keşfedemedi)", en: "The police couldn't discover how the thieves escaped" },
                     { tr: "Alarmın bozulması bir sürprizdi", en: "It was a surprise that the alarm broke down" },
                     { tr: "Kameralar çetenin kimin bankasını hedef aldığını gösterdi", en: "Cameras showed whose bank the gang targeted" },
-                    { tr: "Kaçan soyguncuyu hiç kimse durdurmadı", en: "Nobody stopped the escaping robber" },
+                    { tr: "Kaçan soyguncuyu kimse durdurmadı", en: "Nobody stopped the escaping robber" },
                     { tr: "Çalınan elmasları bulamadım", en: "I couldn't find the stolen diamonds" },
                     { tr: "Helikopterler çatıdan kaçan adamları takip ediyordu", en: "Helicopters were following the men escaping from the roof" },
                     { tr: "Patron tarafından hazırlanan planı anlamadım", en: "I didn't understand the plan prepared by the boss" },
@@ -1131,32 +1048,10 @@
         };
 
         let currentLeague = '', currentSetName = '', activeDeck = [], currentIndex = 0, isFlipped = false, scoreCorrect = 0, scoreFailed = 0, isActive = false, scoreHistory = [];
-        let failedCardsCollection = []; 
-        let completedSets = JSON.parse(localStorage.getItem('el_progress_v10')) || {};
+        let failedCardsCollection = []; // Locked Cage Array for failed cards
+        let completedSets = JSON.parse(localStorage.getItem('el_progress_v9')) || {};
         const leagueIds = ['iron', 'copper', 'bronze', 'silver', 'gold', 'titanium', 'platinum', 'diamond'];
         leagueIds.forEach(l => { if (!completedSets[l]) completedSets[l] = []; });
-
-        // Function to wrap dictionary words in a clickable span
-        function applyDictionaryTags(text) {
-            let processedText = text;
-            for (const [tr, en] of Object.entries(offlineDictionary)) {
-                // Using regex to replace exact words
-                const regex = new RegExp(`\\b${tr}\\b`, 'gi');
-                processedText = processedText.replace(regex, `<span class="dict-word" onclick="showTooltip(event, '${en}')">$&</span>`);
-            }
-            return processedText;
-        }
-
-        // Custom Tooltip Logic
-        function showTooltip(event, translation) {
-            const tooltip = document.getElementById('custom-tooltip');
-            tooltip.innerText = translation;
-            tooltip.style.display = 'block';
-            tooltip.style.left = event.pageX + 'px';
-            tooltip.style.top = (event.pageY - 40) + 'px';
-
-            setTimeout(() => { tooltip.style.display = 'none'; }, 2500);
-        }
 
         function updateMenuProgress() {
             leagueIds.forEach(l => {
@@ -1194,7 +1089,7 @@
 
         function startExercise(sName, deck) {
             currentSetName = sName; 
-            failedCardsCollection = []; 
+            failedCardsCollection = []; // Clear completely before execution loop
             activeDeck = [...deck].sort(() => Math.random() - 0.5);
             currentIndex = 0; scoreCorrect = 0; scoreFailed = 0; scoreHistory = []; isActive = true;
             hideAll(); document.getElementById('flashcard-area').style.display = 'block';
@@ -1210,8 +1105,7 @@
         }
 
         function displayCard() {
-            // Apply the custom dictionary logic to the Turkish text before displaying
-            document.getElementById('turkish-text').innerHTML = applyDictionaryTags(activeDeck[currentIndex].tr);
+            document.getElementById('turkish-text').innerText = activeDeck[currentIndex].tr;
             document.getElementById('english-text').innerText = activeDeck[currentIndex].en;
             document.getElementById('english-text').style.visibility = 'hidden';
             isFlipped = false;
@@ -1227,9 +1121,10 @@
 
         function endExercise(msg) {
             isActive = false; hideAll();
+            // Mark completion safely only if they completed the full main set array
             if (currentIndex >= activeDeck.length && !document.getElementById('hud-set').innerText.includes("(Failures)") && !completedSets[currentLeague].includes(currentSetName)) {
                 completedSets[currentLeague].push(currentSetName);
-                localStorage.setItem('el_progress_v10', JSON.stringify(completedSets));
+                localStorage.setItem('el_progress_v9', JSON.stringify(completedSets));
             }
             let total = scoreCorrect + scoreFailed;
             document.getElementById('results-screen').style.display = 'flex';
@@ -1238,6 +1133,7 @@
             document.getElementById('res-correct').innerText = scoreCorrect;
             document.getElementById('res-failed').innerText = scoreFailed;
 
+            // Interface conditional switching panel logic
             const promptArea = document.getElementById('failed-prompt-area');
             const standardButtons = document.getElementById('standard-result-buttons');
 
@@ -1253,7 +1149,7 @@
 
         function startFailedReview() {
             activeDeck = [...failedCardsCollection].sort(() => Math.random() - 0.5);
-            failedCardsCollection = []; 
+            failedCardsCollection = []; // Empty the tracking cage array for the new loop execution
             currentIndex = 0; scoreCorrect = 0; scoreFailed = 0; scoreHistory = []; isActive = true;
             hideAll(); document.getElementById('flashcard-area').style.display = 'block';
             document.getElementById('hud-set').innerText = currentSetName + " (Failures)";
@@ -1262,7 +1158,7 @@
         }
 
         function closeFailedReview() {
-            failedCardsCollection = []; 
+            failedCardsCollection = []; // Clear items out cleanly
             showSets(currentLeague);
         }
 
@@ -1277,7 +1173,7 @@
             }
             else if (actionType === 'fail' && isFlipped) { 
                 scoreHistory.push('failed'); scoreFailed++; 
-                failedCardsCollection.push(activeDeck[currentIndex]); 
+                failedCardsCollection.push(activeDeck[currentIndex]); // Push locked item to collection cage
                 nextCard(); 
             }
             else if (actionType === 'undo' && currentIndex > 0) {
@@ -1285,10 +1181,11 @@
                 if (last === 'correct') scoreCorrect--; 
                 if (last === 'failed') {
                     scoreFailed--;
-                    failedCardsCollection.pop(); 
+                    failedCardsCollection.pop(); // Remove locked entry upon undo action trigger execution
                 }
                 updateHUD(); 
-                displayCard(); // Ensures dictionary tags are reapplied on undo
+                document.getElementById('turkish-text').innerText = activeDeck[currentIndex].tr;
+                document.getElementById('english-text').innerText = activeDeck[currentIndex].en;
                 document.getElementById('english-text').style.visibility = 'visible'; 
                 isFlipped = true;
             }
