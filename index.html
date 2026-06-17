@@ -19,7 +19,7 @@
         #league-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; justify-content: center; width: 100%; }
         #set-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; justify-items: center; width: 100%; }
         .set-shield { width: 160px; height: 180px; font-size: 24px; border-width: 3px; }
-        .back-btn { background: transparent; border: 2px solid #555; color: #555; padding: 10px 30px; font-size: 20px; font-family: inherit; font-weight: bold; cursor: pointer; transition: 0.2s; text-transform: uppercase; border-radius: 5px; }
+        .back-btn { background: transparent; border: 2px solid #555; color: #555; padding: 10px 30px; font-size: 20px; font-family: inherit; font-weight: bold; cursor: pointer; transition: 0.2s; text-transform: uppercase; border-radius: 5px; margin: 10px; }
         .back-btn:hover { background: #555; color: #fff; }
         #flashcard-area { display: none; width: 100%; height: 100vh; position: relative; }
         .hud { position: absolute; top: 20px; font-size: 24px; font-family: monospace; color: #888; }
@@ -85,7 +85,7 @@
         </div>
     </div>
     <script>
-        const dict = { "teminat": "guarantee", "şanzıman": "transmission", "bayi": "dealer", "gümrük": "customs", "burs": "scholarship", "tez": "thesis", "onay": "approval", "vize": "visa", "pazarlık": "bargain", "toptan": "in bulk", "iflas": "bankruptcy", "kriz": "crisis", "sorun": "problem", "yedek": "spare", "motor": "engine", "başvurmak": "to apply", "emekli": "retired", "sözleşme": "contract", "çalışan": "employee", "iş": "job", "mimar": "architect", "yönetici": "manager", "proje": "project", "harita": "map", "rezervasyon": "reservation" };
+        const dictionary = { "teminat": "guarantee", "şanzıman": "transmission", "bayi": "dealer", "gümrük": "customs", "burs": "scholarship", "tez": "thesis", "onay": "approval", "vize": "visa", "pazarlık": "bargain", "toptan": "in bulk", "iflas": "bankruptcy", "kriz": "crisis", "sorun": "problem", "yedek": "spare", "motor": "engine", "başvurmak": "to apply", "emekli": "retired", "sözleşme": "contract", "çalışan": "employee", "iş": "job", "mimar": "architect", "yönetici": "manager", "proje": "project", "harita": "map", "rezervasyon": "reservation" };
         const vocabularyData = {
             iron: {
                 "Set 1": [{ tr: "Kahve içeriz", en: "We drink coffee" }, { tr: "Çay içmezler", en: "They don't drink tea" }, { tr: "Süt içecek misin?", en: "Will you drink milk?" }, { tr: "Su içmedi", en: "She didn't drink water" }, { tr: "Peynir yer misin?", en: "Do you eat cheese?" }, { tr: "Araba alacak mı?", en: "Will she buy a car?" }, { tr: "Kapıyı açtı", en: "She opened the door" }, { tr: "Kilidi kontrol etti", en: "She checked the lock" }, { tr: "Modemi kontrol edersin", en: "You control the modem" }, { tr: "Filmi izledim", en: "I watched the movie" }, { tr: "Arabaları park ettin mi?", en: "Did you park the cars?" }, { tr: "Ne kadar para biriktireceğiz?", en: "How much money will we save?" }, { tr: "Nerede çay içersin?", en: "Where do you drink tea?" }, { tr: "Neyi iptal ettiler?", en: "What did they cancel?" }, { tr: "Kapıyı nasıl açtın?", en: "How did you open the door?" }, { tr: "Modemi ne zaman kontrol edeceksin?", en: "When will you control the modem?" }, { tr: "Ne zaman araba alacak?", en: "When will she buy a car?" }, { tr: "Hangi kilidi kontrol ettin?", en: "Which lock did you check?" }, { tr: "Kimin arabasını yıkarlar?", en: "Whose car do they wash?" }],
@@ -97,7 +97,7 @@
             copper: {
                 "Set 1": [
                     { tr: "Herkesin okulda bir problemi vardı", en: "Everybody had a problem in the school" },
-                    { tr: "New York'ta hiç kimsemiz yok", en: "We have <span style='color: red; text-decoration: underline;'>nobody</span> in New York <br> (We don't have <span style='color: red; text-decoration: underline;'>anybody</span> in New York)" },
+                    { tr: "New York'ta hiç kimsemiz yok", en: "We have <span style='text-decoration: underline red;'>nobody</span> in New York <br> (We don't have <span style='text-decoration: underline red;'>anybody</span> in New York)" },
                     { tr: "Garajda bir araba var mı?", en: "Is there a car in the garage?" },
                     { tr: "Bankada paramız olacak", en: "We will have money in the bank" },
                     { tr: "Ofiste zamanın yoktu", en: "You didn't have time in the office" },
@@ -108,8 +108,8 @@
                     { tr: "Barda (Pub'da) bir dart turnuvası olmayacak", en: "There won't be a dart tournament in the pub" },
                     { tr: "Bankada parası yoktu", en: "She didn't have money in the bank" },
                     { tr: "Çantamda bir şey mi var?", en: "Is there something in my bag?" },
-                    { tr: "Hiçbir yerde arkadaşları yoktu", en: "They had friends <span style='color: red; text-decoration: underline;'>nowhere</span> <br> (They didn't have friends <span style='color: red; text-decoration: underline;'>anywhere</span>)" },
-                    { tr: "Çantamda hiçbir şeyim yok", en: "I have <span style='color: red; text-decoration: underline;'>nothing</span> in my bag <br> (I don't have <span style='color: red; text-decoration: underline;'>anything</span> in my bag)" },
+                    { tr: "Hiçbir yerde arkadaşları yoktu", en: "They had friends <span style='text-decoration: underline red;'>nowhere</span> <br> (They didn't have friends <span style='text-decoration: underline red;'>anywhere</span>)" },
+                    { tr: "Çantamda hiçbir şeyim yok", en: "I have <span style='text-decoration: underline red;'>nothing</span> in my bag <br> (I don't have <span style='text-decoration: underline red;'>anything</span> in my bag)" },
                     { tr: "Aklında bir şey mi var?", en: "Is there something in your mind?" },
                     { tr: "Herkesin zamanı var mıydı?", en: "Did everybody have time?" },
                     { tr: "Garajımızda bir şey mi var?", en: "Is there something in our garage?" },
@@ -119,7 +119,7 @@
                 ],
                 "Set 2": [
                     { tr: "Herkesin toplantıda bir fikri vardı", en: "Everybody had an idea in the meeting" },
-                    { tr: "Şirkette hiç kimsemiz yok", en: "We have <span style='color: red; text-decoration: underline;'>nobody</span> in the company <br> (We don't have <span style='color: red; text-decoration: underline;'>anybody</span> in the company)" },
+                    { tr: "Şirkette hiç kimsemiz yok", en: "We have <span style='text-decoration: underline red;'>nobody</span> in the company <br> (We don't have <span style='text-decoration: underline red;'>anybody</span> in the company)" },
                     { tr: "Odada bir bilgisayar var mı?", en: "Is there a computer in the room?" },
                     { tr: "Gelecekte şansımız olacak", en: "We will have a chance in the future" },
                     { tr: "Toplantıda fırsatın yoktu", en: "You didn't have an opportunity in the meeting" },
@@ -130,8 +130,8 @@
                     { tr: "Hafta sonu bir maç olmayacak", en: "There won't be a match at the weekend" },
                     { tr: "Cüzdanında kredi kartı yoktu", en: "She didn't have a credit card in her wallet" },
                     { tr: "Cebinde bir şey mi var?", en: "Is there something in your pocket?" },
-                    { tr: "Hiçbir yerde şubeleri yoktu", en: "They had branches <span style='color: red; text-decoration: underline;'>nowhere</span> <br> (They didn't have branches <span style='color: red; text-decoration: underline;'>anywhere</span>)" },
-                    { tr: "Odamda hiçbir şeyim yok", en: "I have <span style='color: red; text-decoration: underline;'>nothing</span> in my room <br> (I don't have <span style='color: red; text-decoration: underline;'>anything</span> in my room)" },
+                    { tr: "Hiçbir yerde şubeleri yoktu", en: "They had branches <span style='text-decoration: underline red;'>nowhere</span> <br> (They didn't have branches <span style='text-decoration: underline red;'>anywhere</span>)" },
+                    { tr: "Odamda hiçbir şeyim yok", en: "I have <span style='text-decoration: underline red;'>nothing</span> in my room <br> (I don't have <span style='text-decoration: underline red;'>anything</span> in my room)" },
                     { tr: "Elinde bir şey mi var?", en: "Is there something in your hand?" },
                     { tr: "Herkesin bir bileti var mıydı?", en: "Did everybody have a ticket?" },
                     { tr: "Bahçemizde bir şey mi var?", en: "Is there something in our garden?" },
@@ -141,7 +141,7 @@
                 ],
                 "Set 3": [
                     { tr: "Herkesin otelde bir odası vardı", en: "Everybody had a room in the hotel" },
-                    { tr: "Paris'te hiç kimsemiz yok", en: "We have <span style='color: red; text-decoration: underline;'>nobody</span> in Paris <br> (We don't have <span style='color: red; text-decoration: underline;'>anybody</span> in Paris)" },
+                    { tr: "Paris'te hiç kimsemiz yok", en: "We have <span style='text-decoration: underline red;'>nobody</span> in Paris <br> (We don't have <span style='text-decoration: underline red;'>anybody</span> in Paris)" },
                     { tr: "Lobide bir harita var mı?", en: "Is there a map in the lobby?" },
                     { tr: "Tatilde arabamız olacak", en: "We will have a car on holiday" },
                     { tr: "Havalimanında zamanın yoktu", en: "You didn't have time at the airport" },
@@ -152,8 +152,8 @@
                     { tr: "Müzede bir rehber olmayacak", en: "There won't be a guide in the museum" },
                     { tr: "Cüzdanında parası yoktu", en: "She didn't have money in her wallet" },
                     { tr: "Valizinde bir şey mi var?", en: "Is there something in your suitcase?" },
-                    { tr: "Hiçbir yerde rezervasyonları yoktu", en: "They had reservations <span style='color: red; text-decoration: underline;'>nowhere</span> <br> (They didn't have reservations <span style='color: red; text-decoration: underline;'>anywhere</span>)" },
-                    { tr: "Sırt çantamda hiçbir şeyim yok", en: "I have <span style='color: red; text-decoration: underline;'>nothing</span> in my backpack <br> (I don't have <span style='color: red; text-decoration: underline;'>anything</span> in my backpack)" },
+                    { tr: "Hiçbir yerde rezervasyonları yoktu", en: "They had reservations <span style='text-decoration: underline red;'>nowhere</span> <br> (They didn't have reservations <span style='text-decoration: underline red;'>anywhere</span>)" },
+                    { tr: "Sırt çantamda hiçbir şeyim yok", en: "I have <span style='text-decoration: underline red;'>nothing</span> in my backpack <br> (I don't have <span style='text-decoration: underline red;'>anything</span> in my backpack)" },
                     { tr: "Listende bir şey mi var?", en: "Is there something on your list?" },
                     { tr: "Herkesin pasaportu var mıydı?", en: "Did everybody have a passport?" },
                     { tr: "Odamızda bir şey mi var?", en: "Is there something in our room?" },
@@ -163,7 +163,7 @@
                 ],
                 "Set 4": [
                     { tr: "Herkesin kasada bir problemi vardı", en: "Everybody had a problem at the checkout" },
-                    { tr: "Mağazada hiç kimsemiz yok", en: "We have <span style='color: red; text-decoration: underline;'>nobody</span> in the store <br> (We don't have <span style='color: red; text-decoration: underline;'>anybody</span> in the store)" },
+                    { tr: "Mağazada hiç kimsemiz yok", en: "We have <span style='text-decoration: underline red;'>nobody</span> in the store <br> (We don't have <span style='text-decoration: underline red;'>anybody</span> in the store)" },
                     { tr: "Vitrinde bir çanta var mı?", en: "Is there a bag in the shop window?" },
                     { tr: "Kartımızda puanımız olacak", en: "We will have points on our card" },
                     { tr: "Markette zamanın yoktu", en: "You didn't have time in the supermarket" },
@@ -174,8 +174,8 @@
                     { tr: "Mağazada bir indirim olmayacak", en: "There won't be a sale in the store" },
                     { tr: "Cebinde nakit parası yoktu", en: "She didn't have cash in her pocket" },
                     { tr: "Alışveriş arabanda bir şey mi var?", en: "Is there something in your cart?" },
-                    { tr: "Hiçbir yerde ürünleri yoktu", en: "They had products <span style='color: red; text-decoration: underline;'>nowhere</span> <br> (They didn't have products <span style='color: red; text-decoration: underline;'>anywhere</span>)" },
-                    { tr: "Poşetimde hiçbir şeyim yok", en: "I have <span style='color: red; text-decoration: underline;'>nothing</span> in my shopping bag <br> (I don't have <span style='color: red; text-decoration: underline;'>anything</span> in my shopping bag)" },
+                    { tr: "Hiçbir yerde ürünleri yoktu", en: "They had products <span style='text-decoration: underline red;'>nowhere</span> <br> (They didn't have products <span style='text-decoration: underline red;'>anywhere</span>)" },
+                    { tr: "Poşetimde hiçbir şeyim yok", en: "I have <span style='text-decoration: underline red;'>nothing</span> in my shopping bag <br> (I don't have <span style='text-decoration: underline red;'>anything</span> in my shopping bag)" },
                     { tr: "Listende bir şey mi var?", en: "Is there something on your shopping list?" },
                     { tr: "Herkesin bir fişi var mıydı?", en: "Did everybody have a receipt?" },
                     { tr: "Sepetimizde bir şey mi var?", en: "Is there something in our basket?" },
@@ -194,7 +194,7 @@
             },
             silver: {
                 "Set 1": [{ tr: "Vaktim var ve bekleyebilirim", en: "I have time and I can wait" }, { tr: "Vaktim yok, bu yüzden bekleyemem", en: "I don't have time so I can't wait" }, { tr: "Vaktim vardı ama bekleyemedim", en: "I had time but I couldn't wait" }, { tr: "Vaktim olmayacak, bu yüzden beklememeliyim", en: "I won't have time so I shouldn't wait" }, { tr: "Vaktim yoktu, yoksa bekleyebilirdim", en: "I didn't have time otherwise I could wait" }, { tr: "Vaktim olacak, sonra bekleyeceğim", en: "I will have time then I will wait" }, { tr: "Vaktim var ama bekleyemem", en: "I have time but I can't wait" }, { tr: "Vaktim yok ve bekleyemem", en: "I don't have time and I can't wait" }, { tr: "Vaktim vardı, bu yüzden bekleyebildim", en: "I had time so I could wait" }, { tr: "Vaktim olmayacak, yoksa bekleyebilirim", en: "I won't have time otherwise I can wait" }, { tr: "Vaktim yoktu ama bekleyebildim", en: "I didn't have time but I could wait" }, { tr: "Vaktim vardı, sonra bekleyebildim", en: "I had time then I could wait" }],
-                "Set 2": [{ tr: "Teknesi var ve yelken açabilir", en: "She has a boat and she can sail" }, { tr: "Teknesi yok, bu yüzden yelken açamaz", en: "She doesn't have a boat so she can't sail" }, { tr: "Teknesi vardı ama yelken açamadı", en: "She had a boat but she couldn't sail" }, { tr: "Teknesi olmayacak, bu yüzden yelken açmamalı", en: "She won't have a boat so she shouldn't sail" }, { tr: "Teknesi yoktu, yoksa yelken açabilirdi", en: "She didn't have a boat otherwise she could sail" }, { tr: "Teknesi olacak, sonra yelken açacak", en: "She will have a boat then she will sail" }, { tr: "Teknesi var ama yelken açamaz", en: "She has a boat but she can't sail" }, { tr: "Teknesi yok ve yelken açamaz", en: "She doesn't have a boat and she can't sail" }, { tr: "Teknesi vardı, bu yüzden yelken açabildi", en: "She had a boat so she could sail" }, { tr: "Teknesi olmayacak, yoksa yelken açabilir", en: "She won't have a boat otherwise she can sail" }, { tr: "Teknesi yoktu ama yelken açabildi", en: "She didn't have a boat but she could sail" }, { tr: "Teknesi vardı, sonra yelken açabildi", en: "She had a boat then she could wait" }],
+                "Set 2": [{ tr: "Teknesi var ve yelken açabilir", en: "She has a boat and she can sail" }, { tr: "Teknesi yok, bu yüzden yelken açamaz", en: "She doesn't have a boat so she can't sail" }, { tr: "Teknesi vardı ama yelken açamadı", en: "She had a boat but she couldn't sail" }, { tr: "Teknesi olmayacak, bu yüzden yelken açmamalı", en: "She won't have a boat so she shouldn't sail" }, { tr: "Teknesi yoktu, yoksa yelken açabilirdi", en: "She didn't have a boat otherwise she could sail" }, { tr: "Teknesi olacak, sonra yelken açacak", en: "She will have a boat then she will sail" }, { tr: "Teknesi var ama yelken açamaz", en: "She has a boat but she can't sail" }, { tr: "Teknesi yok ve yelken açamaz", en: "She doesn't have a boat and she can't sail" }, { tr: "Teknesi vardı, bu yüzden yelken açabildi", en: "She had a boat so she could sail" }, { tr: "Teknesi olmayacak, yoksa yelken açabilir", en: "She won't have a boat otherwise she can sail" }, { tr: "Teknesi yoktu ama yelken açabildi", en: "She didn't have a boat but she could sail" }, { tr: "Teknesi vardı, sonra yelken açabildi", en: "She had a boat then she could sail" }],
                 "Set 3": [{ tr: "Toplantımız var ve ona katılmak zorundasın", en: "We have a meeting and you have to join it" }, { tr: "Toplantımız yok, bu yüzden ona katılmak zorunda değilsin", en: "We don't have a meeting so you don't have to join it" }, { tr: "Toplantımız vardı ama ona katılmak zorunda değildin", en: "We had a meeting but you didn't have to join it" }, { tr: "Toplantımız olmayacak, bu yüzden ona katılmamalısın", en: "We won't have a meeting so you shouldn't join it" }, { tr: "Toplantımız yoktu, yoksa ona katılmak zorundaydın", en: "We didn't have a meeting otherwise you had to join it" }, { tr: "Toplantımız olacak, sonra ona katılmak zorunda kalacaksın", en: "We will have a meeting then you will have to join it" }, { tr: "Toplantımız var ama ona katılmak zorunda değilsin", en: "We have a meeting but you don't have to join it" }, { tr: "Toplantımız yok ve ona katılmak zorunda değilsin", en: "We don't have a meeting and you don't have to join it" }, { tr: "Toplantımız vardı, bu yüzden ona katılmak zorundaydın", en: "We had a meeting so you had to join it" }, { tr: "Toplantımız olmayacak, yoksa ona katılmak zorundasın", en: "We won't have a meeting otherwise you have to join it" }, { tr: "Toplantımız yoktu ama ona katılmak zorundaydın", en: "We didn't have a meeting but you had to join it" }, { tr: "Toplantımız vardı, sonra ona katılmak zorundaydın", en: "We had a meeting then you had to join it" }],
                 "Set 4": [{ tr: "Parti var ve ona katılmalılar", en: "There is a party and they should join it" }, { tr: "Parti yok, bu yüzden ona katılmamalılar", en: "There isn't a party so they shouldn't join it" }, { tr: "Parti vardı ama ona katılmamalıydılar", en: "There was a party but they shouldn't have joined it" }, { tr: "Parti olmayacak, bu yüzden ona katılmamalılar", en: "There won't be a party so they shouldn't join it" }, { tr: "Parti yoktu, yoksa ona katılmalıydılar", en: "There wasn't a party otherwise they should have joined it" }, { tr: "Parti olacak, sonra ona katılmalılar", en: "There will be a party then they should join it" }, { tr: "Parti var ama ona katılmamalılar", en: "There is a party but they shouldn't join it" }, { tr: "Parti yok ve ona katılmamalılar", en: "There isn't a party and they shouldn't join it" }, { tr: "Parti vardı, bu yüzden ona katılmalıydılar", en: "There was a party so they should have joined it" }, { tr: "Parti olmayacak, yoksa ona katılmalılar", en: "There won't be a party otherwise they should join it" }, { tr: "Parti yoktu ama ona katılmalıydılar", en: "There wasn't a party but they should have joined it" }, { tr: "Parti vardı, sonra ona katılmalıydılar", en: "There was a party then they should have joined it" }],
                 "Set 5": [{ tr: "İndirim var ve bir tişört alabilirim", en: "There is a discount and I can buy a t-shirt" }, { tr: "İndirim vardı ama bir tişört alamadım", en: "There was a discount but I couldn't buy a t-shirt" }, { tr: "İndirim olacak, bu yüzden bir tişört alabileceğim", en: "There will be a discount so I will be able to buy a t-shirt" }, { tr: "İndirim yoktu, yoksa bir tişört alabilirdim", en: "There wasn't a discount otherwise I could buy a t-shirt" }, { tr: "İndirim olmayacak, bu yüzden bir tişört alamıyorum", en: "There won't be a discount so I can't buy a t-shirt" }, { tr: "İndirim vardı, sonra bir tişört alabildim", en: "There was a discount then I could buy a t-shirt" }, { tr: "İndirim yok, bu yüzden bir tişört alamıyorum", en: "There isn't a discount so I can't buy a t-shirt" }, { tr: "İndirim olmayacak ve bir tişört alamayacağım", en: "There won't be a discount and I won't be able to buy a t-shirt" }, { tr: "İndirim var, sonra bir tişört alabilirim", en: "There's a discount then I can buy a t-shirt" }, { tr: "İndirim vardı, yoksa bir tişört alamazdım", en: "There was a discount otherwise I couldn't buy a t-shirt" }]
@@ -202,7 +202,7 @@
             gold: {
                 "Set 1": [
                     { tr: "Yedek parçaları bekliyordu, yoksa motoru tamir edemezdi", en: "He was waiting for the spare parts otherwise he couldn't fix the engine" },
-                    { tr: "Yedek parçaları beklemişti, bu yüzden hiçbir şeyi tamir edemiyordu", en: "He had waited for the spare parts so he could fix <span style='color: red; text-decoration: underline;'>nothing</span> <br> (so he couldn't fix <span style='color: red; text-decoration: underline;'>anything</span>)" },
+                    { tr: "Yedek parçaları beklemişti, bu yüzden hiçbir şeyi tamir edemiyordu", en: "He had waited for the spare parts so he could fix <span style='text-decoration: underline red;'>nothing</span> <br> (so he couldn't fix <span style='text-decoration: underline red;'>anything</span>)" },
                     { tr: "Yedek parçaları beklerdi ve garajda kalmak zorundaydı", en: "He used to wait for the spare parts and he had to stay in the garage" },
                     { tr: "Tedarikçi teminatını iade etmişti, yoksa yeni kredi için başvuramazdı", en: "The supplier had returned his deposit otherwise he couldn't apply for new credit" },
                     { tr: "Tedarikçi teminatını tutuyordu ama nakit parasıyla satın alabiliyordu", en: "The supplier was keeping his deposit but he could buy with his cash" },
@@ -211,13 +211,13 @@
                     { tr: "Audi Q7'yi tamir ediyordu, bu yüzden yeni bir şanzıman sipariş etmek zorundaydı", en: "He was fixing the Audi Q7 so he had to order a new transmission" },
                     { tr: "Banka belgelerini iade etti, sonra başka bir kredi için başvurabildi", en: "The bank returned his documents then he could apply for another loan" },
                     { tr: "Bayi parçaları gönderirdi ama tamirciler kargo ücretlerini ödemek zorundaydı", en: "The dealer used to send the parts but the mechanics had to pay the shipping fees" },
-                    { tr: "Gümrük parçaları tutuyordu, bu yüzden tamirciler hiçbir şeyi tamir edemiyordu", en: "The customs were holding the parts so the mechanics could fix <span style='color: red; text-decoration: underline;'>nothing</span> <br> (so the mechanics couldn't fix <span style='color: red; text-decoration: underline;'>anything</span>)" },
+                    { tr: "Gümrük parçaları tutuyordu, bu yüzden tamirciler hiçbir şeyi tamir edemiyordu", en: "The customs were holding the parts so the mechanics could fix <span style='text-decoration: underline red;'>nothing</span> <br> (so the mechanics couldn't fix <span style='text-decoration: underline red;'>anything</span>)" },
                     { tr: "Orijinal bir parçaya ihtiyacı vardı ama yan sanayi bir parça sipariş etmişti", en: "He needed an original part but he had ordered an aftermarket part" },
                     { tr: "Tamirci motoru kontrol ediyordu, sonra tamirci şanzımanı kontrol ediyordu", en: "The mechanic was checking the engine then the mechanic was checking the transmission" }
                 ],
                 "Set 2": [
                     { tr: "Diplomasını bekliyordu, yoksa işe başvuramazdı", en: "She was waiting for her diploma otherwise she couldn't apply for the job" },
-                    { tr: "Diplomasını beklemişti, bu yüzden hiçbir yere başvuramıyordu", en: "She had waited for her diploma so she could apply <span style='color: red; text-decoration: underline;'>nowhere</span> <br> (so she couldn't apply <span style='color: red; text-decoration: underline;'>anywhere</span>)" },
+                    { tr: "Diplomasını beklemişti, bu yüzden hiçbir yere başvuramıyordu", en: "She had waited for her diploma so she could apply <span style='text-decoration: underline red;'>nowhere</span> <br> (so she couldn't apply <span style='text-decoration: underline red;'>anywhere</span>)" },
                     { tr: "Notlarını beklerdi ve kütüphanede kalmak zorundaydı", en: "She used to wait for her grades and she had to stay in the library" },
                     { tr: "Üniversite tezini iade etmişti, yoksa mezuniyet için başvuramazdı", en: "The university had returned her thesis otherwise she couldn't apply for graduation" },
                     { tr: "Üniversite tezini tutuyordu ama kredileriyle mezun olabiliyordu", en: "The university was keeping her thesis but she could graduate with her credits" },
@@ -226,13 +226,13 @@
                     { tr: "Kampüse taşınıyordu, bu yüzden yurt odası için başvurmak zorundaydı", en: "She was moving to campus so she had to apply for a dorm room" },
                     { tr: "Profesör taslağını iade etti, sonra başka bir makale yazabildi", en: "The professor returned her draft then she could write another essay" },
                     { tr: "Okul kitapları gönderirdi ama öğrenciler kayıt ücretlerini ödemek zorundaydı", en: "The school used to send the books but the students had to pay the registration fees" },
-                    { tr: "Öğretmenler sonuçları tutuyordu, bu yüzden öğrenciler hiçbir şey öğrenemiyordu", en: "The teachers were holding the results so the students could learn <span style='color: red; text-decoration: underline;'>nothing</span> <br> (so the students couldn't learn <span style='color: red; text-decoration: underline;'>anything</span>)" },
+                    { tr: "Öğretmenler sonuçları tutuyordu, bu yüzden öğrenciler hiçbir şey öğrenemiyordu", en: "The teachers were holding the results so the students could learn <span style='text-decoration: underline red;'>nothing</span> <br> (so the students couldn't learn <span style='text-decoration: underline red;'>anything</span>)" },
                     { tr: "İleri düzey bir kursa ihtiyacı vardı ama temel bir kurs için başvurmuştu", en: "She needed an advanced course but she had applied for a basic course" },
                     { tr: "Sistem başvuruları işliyordu, sonra sistem belgeleri işliyordu", en: "The system was processing the applications then the system was processing the documents" }
                 ],
                 "Set 3": [
                     { tr: "Onay bekliyordu, yoksa projeye başlayamazdı", en: "He was waiting for approval otherwise he couldn't start the project" },
-                    { tr: "Onay beklemişti, bu yüzden hiçbir şey yapamıyordu", en: "He had waited for approval so he could do <span style='color: red; text-decoration: underline;'>nothing</span> <br> (so he couldn't do <span style='color: red; text-decoration: underline;'>anything</span>)" },
+                    { tr: "Onay beklemişti, bu yüzden hiçbir şey yapamıyordu", en: "He had waited for approval so he could do <span style='text-decoration: underline red;'>nothing</span> <br> (so he couldn't do <span style='text-decoration: underline red;'>anything</span>)" },
                     { tr: "Onay beklerdi ve ofisinde kalmak zorundaydı", en: "He used to wait for approval and he had to stay in his office" },
                     { tr: "Yönetici raporunu iade etmişti, yoksa yeni fon için başvuramazdı", en: "The manager had returned his report otherwise he couldn't apply for new funding" },
                     { tr: "Yönetici raporunu tutuyordu ama slaytlarıyla sunum yapabiliyordu", en: "The manager was keeping his report but he could present with his slides" },
@@ -241,13 +241,13 @@
                     { tr: "Almanya'ya seyahat ediyordu, bu yüzden izin için başvurmak zorundaydı", en: "He was traveling to Germany so he had to apply for a permit" },
                     { tr: "Yönetici raporunu iade etti, sonra başka bir fon için başvurabildi", en: "The manager returned his report then he could apply for another funding" },
                     { tr: "Şirket cihazları gönderirdi ama çalışanlar kargo ücretlerini ödemek zorundaydı", en: "The company used to send the devices but the employees had to pay the shipping fees" },
-                    { tr: "Yöneticiler bütçeleri tutuyordu, bu yüzden çalışanlar hiçbir şey alamıyordu", en: "The managers were holding the budgets so the employees could buy <span style='color: red; text-decoration: underline;'>nothing</span> <br> (so the employees couldn't buy <span style='color: red; text-decoration: underline;'>anything</span>)" },
+                    { tr: "Yöneticiler bütçeleri tutuyordu, bu yüzden çalışanlar hiçbir şey alamıyordu", en: "The managers were holding the budgets so the employees could buy <span style='text-decoration: underline red;'>nothing</span> <br> (so the employees couldn't buy <span style='text-decoration: underline red;'>anything</span>)" },
                     { tr: "Kalıcı bir izne ihtiyacı vardı ama geçici bir izin için başvurmuştu", en: "He needed a permanent permit but he had applied for a temporary permit" },
                     { tr: "Güvenlik yaka kartlarını tarıyordu, sonra güvenlik yüzleri tarıyordu", en: "The security was scanning the badges then the security was scanning the faces" }
                 ],
                 "Set 4": [
                     { tr: "Vize bekliyordu, yoksa ülkeden ayrılamazdı", en: "She was waiting for a visa otherwise she couldn't leave the country" },
-                    { tr: "Vize beklemişti, bu yüzden hiçbir yere gidemiyordu", en: "She had waited for a visa so she could go <span style='color: red; text-decoration: underline;'>nowhere</span> <br> (so she couldn't go <span style='color: red; text-decoration: underline;'>anywhere</span>)" },
+                    { tr: "Vize beklemişti, bu yüzden hiçbir yere gidemiyordu", en: "She had waited for a visa so she could go <span style='text-decoration: underline red;'>nowhere</span> <br> (so she couldn't go <span style='text-decoration: underline red;'>anywhere</span>)" },
                     { tr: "Vize beklerdi ve ülkesinde kalmak zorundaydı", en: "She used to wait for a visa and she had to stay in her country" },
                     { tr: "Konsolosluk pasaportunu iade etmişti, yoksa yeni vize için başvuramazdı", en: "The consulate had returned her passport otherwise she couldn't apply for a new visa" },
                     { tr: "Konsolosluk pasaportunu tutuyordu ama kimlik kartıyla seyahat edebiliyordu", en: "The consulate was keeping her passport but she could travel with her ID card" },
@@ -256,7 +256,7 @@
                     { tr: "İngiltere'ye seyahat ediyordu, bu yüzden vize için başvurmak zorundaydı", en: "She was traveling to England so she had to apply for a visa" },
                     { tr: "Konsolosluk pasaportunu iade etti, sonra başka bir vize için başvurabildi", en: "The consulate returned her passport then she could apply for another visa" },
                     { tr: "Büyükelçilik pasaportları gönderirdi ama vatandaşlar kargo ücretlerini ödemek zorundaydı", en: "The embassy used to send the passports but the citizens had to pay the shipping fees" },
-                    { tr: "Konsolosluklar pasaportları tutuyordu, bu yüzden vatandaşlar hiçbir yere seyahat edemiyordu", en: "The consulates were holding the passports so the citizens could travel <span style='color: red; text-decoration: underline;'>nowhere</span> <br> (so the citizens couldn't travel <span style='color: red; text-decoration: underline;'>anywhere</span>)" },
+                    { tr: "Konsolosluklar pasaportları tutuyordu, bu yüzden vatandaşlar hiçbir yere seyahat edemiyordu", en: "The consulates were holding the passports so the citizens could travel <span style='text-decoration: underline red;'>nowhere</span> <br> (so the citizens couldn't travel <span style='text-decoration: underline red;'>anywhere</span>)" },
                     { tr: "Ticari bir vizeye ihtiyacı vardı ama turistik bir vize için başvurmuştu", en: "She needed a commercial visa but she had applied for a tourist visa" },
                     { tr: "Konsolosluk pasaportları tarıyordu, sonra konsolosluk parmak izlerini tarıyordu", en: "The consulate was scanning the passports then the consulate was scanning the fingerprints" }
                 ]
